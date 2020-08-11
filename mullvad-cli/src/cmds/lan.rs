@@ -1,4 +1,4 @@
-use crate::{new_grpc_client, Command, Result};
+use crate::{new_rpc_client, Command, Result};
 use clap::value_t_or_exit;
 
 pub struct Lan;
@@ -42,14 +42,14 @@ impl Command for Lan {
 
 impl Lan {
     async fn set(&self, allow_lan: bool) -> Result<()> {
-        let mut rpc = new_grpc_client().await?;
+        let mut rpc = new_rpc_client().await?;
         rpc.set_allow_lan(allow_lan).await?;
         println!("Changed local network sharing setting");
         Ok(())
     }
 
     async fn get(&self) -> Result<()> {
-        let mut rpc = new_grpc_client().await?;
+        let mut rpc = new_rpc_client().await?;
         let allow_lan = rpc.get_settings(()).await?.into_inner().allow_lan;
         println!(
             "Local network sharing setting: {}",

@@ -1,4 +1,4 @@
-use crate::{new_grpc_client, Command, Result};
+use crate::{new_rpc_client, Command, Result};
 use talpid_types::ErrorExt;
 
 pub struct Connect;
@@ -15,7 +15,7 @@ impl Command for Connect {
     }
 
     async fn run(&self, _: &clap::ArgMatches<'_>) -> Result<()> {
-        let mut rpc = new_grpc_client().await?;
+        let mut rpc = new_rpc_client().await?;
         if let Err(e) = rpc.connect_tunnel(()).await {
             eprintln!("{}", e.display_chain());
         }
